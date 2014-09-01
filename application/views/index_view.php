@@ -16,7 +16,7 @@
 		<li><a href="#">项目</a></li>
 		<li><a href="#">关于</a></li>
 		<li id="searchBox">
-			<form action="/">
+			<form action="http://localhost/index.php/index/search" method="post">
 				<input type="text" name="search" id="search"/><input type="submit" id="searchBtn"
 				                                                     value="搜索"/>
 			</form>
@@ -30,6 +30,9 @@
 		<?php
 			if (isset($tag)) {
 				echo "<h2><a id='tag' href='http://localhost/index.php/index/searchByTag/$tag'>当前标签:$tag</a></h2>";
+			}
+			if (isset($search)) {
+				echo "<h2><a id='tag' href='http://localhost/index.php/index/search/$search'>搜索:$search</a></h2>";
 			}
 			foreach ($articles as $article) {
 				$tags = explode('-', $article->tag);

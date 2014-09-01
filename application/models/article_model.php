@@ -31,6 +31,12 @@
                 			like '%s' ORDER BY id DESC limit %d,%d ", '%' . $tag . '%',$page*10,10));
                 			return $query->result();
          }
+         public function get_article_by_title($title,$page=0) {
+                			$query = $this->db->query(sprintf("select * from article where title
+                			like '%s' ORDER BY id DESC limit %d,%d ", '%' . $title . '%',$page*10,
+                			10));
+                			return $query->result();
+         }
 
 		public function get_paper($id){
 			$query=$this->db->query(sprintf('select * from article where id=%d',$id));

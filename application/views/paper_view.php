@@ -6,9 +6,81 @@
 	<title></title>
 	<link rel="stylesheet" href="http://localhost/resources/css/style.css"/>
 	<style>
-		#content article{
-			border:none;
+		#content article {
+			border: none;
 		}
+
+		#comment {
+			padding-top: 30px;
+			margin-top: 50px;
+			border-top: 1px solid #a2a749;
+			border-bottom: 1px solid #a2a749;
+		}
+
+		#comment p {
+			position: relative;
+			margin-bottom: 15px;
+		}
+
+		#comment input {
+			position: relative;
+			float: right;
+			right: 450px;
+			top: 0;
+			width: 200px;
+		}
+
+		#comment textarea {
+			vertical-align: top;
+			position: relative;
+			float: right;
+			right: 275px;
+			top: 0;
+		}
+
+		#comment .you {
+			height: 70px;
+		}
+
+		#commentBtn {
+			height: 30px;
+		}
+
+		#commentBtn input {
+			position: relative;
+			width: 80px;
+			float: right;
+			right: 575px;
+			top: 0;
+		}
+
+		.resultS {
+			position: relative;
+			float: right;
+		}
+
+		#comments {
+			margin-top: 10px;
+		}
+
+		#comments div {
+			position: relative;
+			margin-bottom: 10px;
+		}
+
+		#comments p {
+			padding: 10px;
+			background: #e7e9c0;
+		}
+
+		.commentInfo {
+			position: relative;
+			right: 10px;
+			bottom: 20px;
+			font-size: 10px;
+			float: right;
+		}
+
 	</style>
 </head>
 <body>
@@ -21,9 +93,11 @@
 		<li><a href="#">项目</a></li>
 		<li><a href="#">关于</a></li>
 		<li id="searchBox">
-			<form action="/">
-				<input type="text" name="search" id="search"/><input type="submit" id="searchBtn"
-				                                                     value="搜索"/>
+			<form action="http://localhost/index.php/index/search"
+			      method="post">
+				<input type="text" name="search" id="search"/><input
+					type="submit" id="searchBtn"
+					value="搜索"/>
 			</form>
 		</li>
 
@@ -40,7 +114,7 @@
 			}
 			echo <<<EOT
 				<article><header class="title">
-                <h4>{$article->title}</h4>
+                <h2>{$article->title}</h2>
 
                 <div class="info">
                     <span class="tag">标签：{$tagsA}</span><span
@@ -53,22 +127,66 @@
             </div></article>
 EOT
 		?>
+		<div id="comment">
+			<form action="http://localhost/index.php/paper/addComment"
+			      id="commentForm" method="post">
+				<p><label for="name">Name*</label><input type="text"
+				                                         name="cname"
+				                                         id="name"/>
+				</p>
+
+				<p><label for="email">Email*</label><input type="text"
+				                                           name="cemail"
+				                                           id="email"/>
+				</p>
+
+				<p class="you"><label for="youComment">评论*</label><textarea
+						cols="50" rows="3"
+						name="content"
+						id="youComment"></textarea>
+				</p>
+				<input type="hidden" name="articleid"
+				       value="<?php echo $article->id ?>"/>
+				<input type="hidden" name="ctime" value="" id="ctime"/>
+
+				<p id="commentBtn"><input id="submit" type="submit"
+				                          value="发表评论"/>
+				</p>
+			</form>
+		</div>
+		<div id="comments">
+			<?php
+				foreach ($comments as $comment) {
+					echo <<<EOT
+				<div>
+				<p>{$comment->content}</p>
+				<span class="commentInfo">{$comment->cname}发表于{$comment->ctime}</span>
+			</div>
+EOT;
+
+				}
+			?>
+
+		</div>
 	</section>
 	<aside>
 		<div id="moreAboutMe">
 			<h3>关注我</h3>
 			<ul>
-				<li><a class="weibo" href="http://weibo.com/gwiamgw" target="_blank">
+				<li><a class="weibo" href="http://weibo.com/gwiamgw"
+				       target="_blank">
 						新浪微博</a></li>
 				<li>
 					<a class="mail" href="mailto:gongweiqm@qq.com"
 					   target="_blank">gongweiqm@qq.com</a></li>
 				<li>
-					<a class="github" href="https://github.com/gongeek" target="_blank">github</a>
+					<a class="github" href="https://github.com/gongeek"
+					   target="_blank">github</a>
 				</li>
 				<li>
 					<a class="sta" href="https://stackoverflow
-				.com/users/3416109/gongeek" target="_blank">stackoverflow</a></li>
+				.com/users/3416109/gongeek" target="_blank">stackoverflow</a>
+				</li>
 			</ul>
 		</div>
 		<div id="randomArticle">
@@ -84,5 +202,13 @@ EOT
 <div id="top">回顶部</div>
 <footer>版权为gongeek所有,欢迎访问 <a href="">www.gongeek.com</a></footer>
 <script src="http://localhost/resources/js/index.js"></script>
+<script>
+	window.addEventListener('load', function () {
+		var nowDate = new Date(),
+			ctime = document.getElementById('ctime');
+		ctime.value = nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1) + "-" + nowDate
+			.getDate();
+	}, false);
+</script>
 </body>
 </html>

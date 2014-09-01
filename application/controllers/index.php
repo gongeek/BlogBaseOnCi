@@ -53,6 +53,15 @@
 			$this->load->view('index_view', $data);
 		}
 
+		public function search($title='', $page = 0) {
+			if (empty($title)) {
+				$title = $this->input->post('search');
+			}
+			$result = $this->article_model->get_article_by_title($title, $page);
+			$data = array('articles' => $result, 'page' => $page, 'ca' => "search/$title",
+				'search' => $title);
+			$this->load->view('index_view', $data);
+		}
 	}
 
 	/* End of file welcome.php */

@@ -21,14 +21,34 @@
 		public function __construct() {
 			parent::__construct();
 			$this->load->model('article_model');
+			$this->load->model('comment_model');
 		}
 
 		public function show($id) {
 			$result = $this->article_model->get_paper($id);
-			$data = array('article' => $result[0]);
+			$comment = $this->comment_model->get_comment($id);
+			$data = array('article' => $result[0], 'comments' => $comment);
 			$this->load->view('paper_view', $data);
 		}
-	}
 
-	/* End of file welcome.php */
-	/* Location: ./application/controllers/welcome.php */
+		public function addComment() {
+			$content = $this->input->post('content');
+			$articleid = $this->input->post('articleid');
+			$cname = $this->input->post('cname');
+			$ctime = $this->input->post('ctime');
+			$cemail = $this->input->post('cemail');
+			$data = array(
+				'content' => $content,
+				'articleid' => $articleid,
+				'cname' => $cname,
+				'ctime' => $ctime,
+				'cemail' => $cemail
+			);
+			if (empty($content) || empty($cname) || empty($ctime) || empty($cemail)) {
+				echo "评论失败";
+				return;
+			}
+			$this->db->insert('comment', $data);
+			$this->show($articleid);
+		}
+	}
